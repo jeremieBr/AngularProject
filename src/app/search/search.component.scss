@@ -2,4 +2,17 @@ form {
   .invalid {
     color: red;
   }
+  .valid {
+    color: green;
+  }
+
+  button {
+    min-width: 110px;
+    .spinner-border {
+      width: 1rem;
+      height: 1rem;
+      border: 0.15em solid currentColor;
+      border-right-color: transparent;
+    }
+  }
 }

@@ -1,36 +1,52 @@
-<div class="container">
-  <form [formGroup]="stockForm" (ngSubmit)="addStock()">
-    <div class="row">
-      <p>Enter the symbol of a stock to track (i.e APPL,TSLA,GOOGL)</p>
-    </div>
-    <div class="row">
-      <div class="col-lg-2 col-md-3">
-        <div class="form-group">
-          <input
-            type="text"
-            class="form-control"
-            id="inputStock"
-            aria-describedby="stock"
-            formControlName="stockName"
-            maxlength="5"
-          />
-          <small
-            *ngIf="stockName?.errors && stockName?.touched"
-            class="invalid"
+<div class="card">
+  <h5 class="card-header">Search stock</h5>
+  <div class="card-body">
+    <form [formGroup]="stockForm" (ngSubmit)="addStock()">
+      <p class="card-text">
+        Enter the symbol of a stock to track (i.e AAPL,TSLA,GOOGL).
+      </p>
+      <div class="row">
+        <div class="col-md-3 col-6">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="inputStock"
+              aria-describedby="stock"
+              formControlName="stockName"
+              maxlength="5"
+              placeholder="Ex : AAPL"
+            />
+          </div>
+        </div>
+        <div class="col-md-9 col-6">
+          <button
+            type="submit"
+            [disabled]="stockForm.invalid || isloading"
+            class="btn btn-primary"
           >
-            The stock name must be between 1 and 5 characters !
-          </small>
+            <span [hidden]="isloading">Track Stock</span>
+            <div
+              [hidden]="!isloading"
+              class="spinner-border"
+              role="status"
+            ></div>
+          </button>
         </div>
       </div>
-      <div class="col-sm">
-        <button
-          type="submit"
-          [disabled]="stockForm.invalid"
-          class="btn btn-primary"
+      <div class="row">
+        <small *ngIf="stockName?.errors && stockName?.touched" class="invalid">
+          The stock name must be between 1 and 5 characters !
+        </small>
+        <small
+          [ngClass]="{
+            invalid: infoMsg?.type === eTypeInfoMessage.error,
+            valid: infoMsg?.type === eTypeInfoMessage.success
+          }"
         >
-          Track Stock
-        </button>
+          {{ infoMsg?.text }}
+        </small>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
