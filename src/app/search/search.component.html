@@ -1,0 +1,36 @@
+<div class="container">
+  <form [formGroup]="stockForm" (ngSubmit)="addStock()">
+    <div class="row">
+      <p>Enter the symbol of a stock to track (i.e APPL,TSLA,GOOGL)</p>
+    </div>
+    <div class="row">
+      <div class="col-lg-2 col-md-3">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            id="inputStock"
+            aria-describedby="stock"
+            formControlName="stockName"
+            maxlength="5"
+          />
+          <small
+            *ngIf="stockName?.errors && stockName?.touched"
+            class="invalid"
+          >
+            The stock name must be between 1 and 5 characters !
+          </small>
+        </div>
+      </div>
+      <div class="col-sm">
+        <button
+          type="submit"
+          [disabled]="stockForm.invalid"
+          class="btn btn-primary"
+        >
+          Track Stock
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
