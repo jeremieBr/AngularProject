@@ -10,6 +10,7 @@ import { StockService } from "../shared/services/stock.service";
   styleUrls: ["./list.component.scss"],
 })
 export class ListComponent implements OnInit {
+  // Data
   stocks!: Observable<StockMarket[]>;
 
   // Private
@@ -30,6 +31,10 @@ export class ListComponent implements OnInit {
     this.stockStoreService.setStocks(this.stockService.getStocks());
   }
 
+  /**
+   * Remove stock from list
+   * @param stock Stock
+   */
   public removeStock(stock: StockMarket): void {
     this.stockService.removeStockFromLocalStorage(stock);
   }

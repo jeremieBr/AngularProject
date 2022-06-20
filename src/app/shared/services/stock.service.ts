@@ -26,12 +26,23 @@ export class StockService {
     );
   }
 
+  /**
+   *
+   * @param symbol Symbol of stock
+   * @returns Observable of SearchDetailsStock
+   */
   public getDescBySymbol(symbol: string): Observable<searchDetailsStock> {
     return this.httpClient.get<searchDetailsStock>(
       `${environment.finnhubApiUrl}/search?q=${symbol}`
     );
   }
 
+  /**
+   *
+   * @param monthsDuration Number of month sentiments
+   * @param symbol Symbol of stock
+   * @returns Observable of an Array of Sentiment
+   */
   public getDetailsByMonths(
     monthsDuration: number,
     symbol: string
@@ -69,7 +80,7 @@ export class StockService {
 
   /**
    * Get string from localStorage and return a list of stocks.
-   * @returns List of stocks
+   * @returns Array of stocks or empty array
    */
   public getStocks(): StockMarket[] {
     const localStoragestocks = localStorage.getItem(

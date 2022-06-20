@@ -11,10 +11,18 @@ export class StockStoreService {
 
   constructor() {}
 
+  /**
+   * Update subject with new data
+   * @param stocks Array of stock
+   */
   public setStocks(stocks: StockMarket[]): void {
     this.stocks$.next(stocks);
   }
 
+  /**
+   * Add stock to localStorage, then update subject
+   * @param stock : Stock market to add
+   */
   public addStock(stock: StockMarket): void {
     const stockIndex = this.verifyExistingStock(stock);
     const stocks = this.stocks$.value;
@@ -31,6 +39,10 @@ export class StockStoreService {
     this.setStocks(stocks);
   }
 
+  /**
+   * Remove stock from localStorage, then update subject
+   * @param stock Stock market to delete
+   */
   public removeStock(stock: StockMarket): void {
     const stockIndex = this.verifyExistingStock(stock);
     const stocks = this.stocks$.value;
@@ -45,8 +57,8 @@ export class StockStoreService {
   }
 
   /**
-   * Verify if stock exist by return an index.
-   * @param stock Stock market to be add
+   * Verify if stock exist by returning an index.
+   * @param stock Stock market to check
    * @returns index of stock
    */
   public verifyExistingStock(stock: StockMarket): number {
@@ -58,6 +70,9 @@ export class StockStoreService {
     return stockIndex;
   }
 
+  /**
+   * Return current stocks as Observable.
+   */
   get getStocks$(): Observable<StockMarket[]> {
     return this.stocks$.asObservable();
   }

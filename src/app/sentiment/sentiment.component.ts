@@ -15,10 +15,13 @@ const NB_MONTH_TO_DISPLAY = 3;
   styleUrls: ["./sentiment.component.scss"],
 })
 export class SentimentComponent implements OnInit {
+  // Data
   sentiments!: Sentiment[];
+  stock?: StockMarket;
+
+  // Utils
   monthsToDisplay!: number[];
   monthEnum = Month;
-  stock?: StockMarket;
 
   // Private
   private notifier = new Subject();
@@ -29,13 +32,18 @@ export class SentimentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Get Symbol from the param url.
     const symbol = this.route.snapshot.paramMap.get("symbol");
+
+    // Get month to display it when no value return by api.
     this.getMonthsToDisplay(NB_MONTH_TO_DISPLAY);
     if (symbol) {
+      // Get sentiment of stock market
       this.stockService
         .getDetailsByMonths(NB_MONTH_TO_DISPLAY, symbol)
         .pipe(takeUntil(this.notifier))
         .subscribe((s: Sentiment[]) => (this.sentiments = s));
+      // Get informations (Name/desc) of symbol
       this.stock = this.stockService
         .getStocks()
         .find((stock: StockMarket) => stock.symbol === symbol);
@@ -51,7 +59,7 @@ export class SentimentComponent implements OnInit {
    *
    * @param monthDuration Number of month to display since now.
    */
-  private getMonthsToDisplay(monthDuration: number) {
+  private getMonthsToDisplay(monthDuration: number): void {
     const month = new Date().getMonth();
     const monthsToDisplay: number[] = [];
     for (let i = 0; i < monthDuration; i++) {
