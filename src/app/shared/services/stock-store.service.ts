@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 import { StockMarket } from "../models/stockMarket.model";
 
 @Injectable({
@@ -23,7 +24,10 @@ export class StockStoreService {
       stocks.push(stock);
     }
 
-    localStorage.setItem("stocks", JSON.stringify(stocks));
+    localStorage.setItem(
+      environment.stockLocalStorageKey,
+      JSON.stringify(stocks)
+    );
     this.setStocks(stocks);
   }
 
@@ -32,7 +36,10 @@ export class StockStoreService {
     const stocks = this.stocks$.value;
     if (stockIndex !== -1) {
       stocks.splice(stockIndex, 1);
-      localStorage.setItem("stocks", JSON.stringify(stocks));
+      localStorage.setItem(
+        environment.stockLocalStorageKey,
+        JSON.stringify(stocks)
+      );
       this.setStocks(stocks);
     }
   }

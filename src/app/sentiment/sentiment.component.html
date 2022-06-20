@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="card mb-5">
+    <div class="card-header">
+      <h5 class="card-title">{{ stock?.description }} ({{ stock?.symbol }})</h5>
+    </div>
+    <div class="card-body">
+      <div class="row" *ngIf="sentiments">
+        <div
+          *ngFor="let month of monthsToDisplay; let index = index"
+          class="col"
+        >
+          <div class="row">
+            <div class="col">
+              <div class="row">{{ monthEnum[month] }}</div>
+              <div class="row">
+                Change:
+                {{
+                  sentiments[index]
+                    ? (sentiments[index].change | number: "1.0-0")
+                    : "No value"
+                }}
+              </div>
+              <div class="row">
+                MSPR:
+                {{
+                  sentiments[index]
+                    ? (sentiments[index].mspr | number: "1.0-2")
+                    : "No value"
+                }}
+              </div>
+            </div>
+            <div class="col">
+              <span
+                *ngIf="sentiments[index]"
+                class="marker"
+                [ngClass]="{
+                  negative: sentiments[index].change < 0,
+                  positive: sentiments[index].change >= 0
+                }"
+                >{{ sentiments[index].change < 0 ? "🡻" : "🡹" }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" [routerLink]="''" class="btn btn-primary">
+    Back to list of stocks
+  </button>
+</div>

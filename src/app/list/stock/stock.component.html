@@ -7,8 +7,8 @@
     </button>
   </div>
   <div class="card-body">
-    <div class="row">
-      <div class="col-6">
+    <div class="row mb-5">
+      <div class="col">
         <div class="row">
           <div class="col-6">
             Change today : {{ stock.dp | number: "1.1-1" }}%
@@ -24,7 +24,7 @@
           <div class="col-6">High price : {{ stock.h | currency: "USD" }}</div>
         </div>
       </div>
-      <div class="col-6 text-center">
+      <div class="col-3 col-md-6 text-center">
         <span
           class="marker"
           [ngClass]="{ negative: stock.dp < 0, positive: stock.dp >= 0 }"
@@ -32,7 +32,12 @@
         >
       </div>
     </div>
-    <div class="bottom"></div>
-    <a href="#" class="btn btn-primary">Go to social sentiment details</a>
+    <button
+      type="button"
+      [routerLink]="['/sentiment', stock.symbol]"
+      class="btn btn-primary"
+    >
+      Go to social sentiment details
+    </button>
   </div>
 </div>

@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { environment } from "src/environments/environment";
+import { ResultSentiment, Sentiment } from "../models/sentiment.model";
 import { searchDetailsStock, StockMarket } from "../models/stockMarket.model";
 import { StockStoreService } from "./stock-store.service";
 
@@ -26,9 +27,28 @@ export class StockService {
   }
 
   public getDescBySymbol(symbol: string): Observable<searchDetailsStock> {
-    return this.httpClient.get<any>(
+    return this.httpClient.get<searchDetailsStock>(
       `${environment.finnhubApiUrl}/search?q=${symbol}`
     );
+  }
+
+  public getDetailsByMonths(
+    monthsDuration: number,
+    symbol: string
+  ): Observable<Sentiment[]> {
+    const endDate = new Date();
+    endDate.setDate(1);
+    const startDate = new Date(endDate);
+    startDate.setMonth(endDate.getMonth() - (monthsDuration - 1));
+    return this.httpClient
+      .get<ResultSentiment>(
+        `${
+          environment.finnhubApiUrl
+        }/stock/insider-sentiment?symbol=${symbol}&from=${
+          startDate.toISOString().split("T")[0]
+        }&to=${endDate.toISOString().split("T")[0]}`
+      )
+      .pipe(map((res: ResultSentiment) => res.data));
   }
 
   /**
@@ -52,7 +72,9 @@ export class StockService {
    * @returns List of stocks
    */
   public getStocks(): StockMarket[] {
-    const localStoragestocks = localStorage.getItem("stocks");
+    const localStoragestocks = localStorage.getItem(
+      environment.stockLocalStorageKey
+    );
     return localStoragestocks?.length ? JSON.parse(localStoragestocks) : [];
   }
 }

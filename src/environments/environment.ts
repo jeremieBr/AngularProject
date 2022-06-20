@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   finnhubApiUrl: "https://finnhub.io/api/v1/",
   finnhubApiKey: "calmk7iad3ife6c66fig",
+  stockLocalStorageKey: "stocks",
 };
 
 /*

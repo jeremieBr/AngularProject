@@ -7,14 +7,13 @@ import { AppComponent } from "./app.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HomeComponent } from "./home/home.component";
 import { HeaderComponent } from "./header/header.component";
-import { FooterComponent } from "./footer/footer.component";
 import { SearchModule } from "./search/search.module";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { StockInterceptor } from "./shared/interceptors/stock.interceptor";
 import { ListModule } from "./list/list.module";
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent],
+  declarations: [AppComponent, HomeComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
