@@ -1,0 +1,18 @@
+button {
+  &.close {
+    position: absolute;
+    right: 0px;
+    top: 0;
+  }
+}
+span {
+  &.marker {
+    font-size: 2rem;
+  }
+}
+.positive {
+  color: #008000;
+}
+.negative {
+  color: #ff0000;
+}

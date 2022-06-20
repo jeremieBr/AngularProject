@@ -1,0 +1,3 @@
+<div *ngFor="let stock of stocks | async" class="my-3">
+  <app-stock [stock]="stock" (removeItem)="removeStock($event)"></app-stock>
+</div>
