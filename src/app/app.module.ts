@@ -11,10 +11,17 @@ import { FooterComponent } from "./footer/footer.component";
 import { SearchModule } from "./search/search.module";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { StockInterceptor } from "./shared/interceptors/stock.interceptor";
+import { ListModule } from "./list/list.module";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent],
-  imports: [BrowserModule, AppRoutingModule, NgbModule, SearchModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgbModule,
+    SearchModule,
+    ListModule,
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

@@ -1,11 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Subject, takeUntil, tap } from "rxjs";
+import { Subject, takeUntil, tap, switchMap, map } from "rxjs";
 import {
   InfoMessage,
   TypeInfoMessage,
 } from "../shared/models/infoMessage.model";
-import { StockMarket } from "../shared/models/stockMarket.model";
+import {
+  searchDetailsStock,
+  StockMarket,
+} from "../shared/models/stockMarket.model";
+import { StockStoreService } from "../shared/services/stock-store.service";
 import { StockService } from "../shared/services/stock.service";
 
 @Component({
@@ -25,7 +29,11 @@ export class SearchComponent implements OnInit {
   // Private
   private notifier = new Subject();
 
-  constructor(private fb: FormBuilder, private stockService: StockService) {}
+  constructor(
+    private fb: FormBuilder,
+    private stockService: StockService,
+    private stockStoreService: StockStoreService
+  ) {}
 
   ngOnInit(): void {
     this.stockForm = this.fb.group({
@@ -54,6 +62,19 @@ export class SearchComponent implements OnInit {
       this.stockService
         .getBySymbol(stockName)
         .pipe(
+          takeUntil(this.notifier),
+          // Get description of stock
+          switchMap((stock: StockMarket) =>
+            this.stockService.getDescBySymbol(stockName).pipe(
+              map((searchDetails: searchDetailsStock) => {
+                if (searchDetails.count) {
+                  stock.description = searchDetails.result[0].description;
+                }
+                return stock;
+              })
+            )
+          ),
+          // Show info message
           tap((stock: StockMarket) => {
             if (!stock.c) {
               this.infoMsg = {
@@ -62,7 +83,8 @@ export class SearchComponent implements OnInit {
               };
             } else {
               stock.symbol = stockName;
-              const indexStock = this.stockService.verifyExistingStock(stock);
+              const indexStock =
+                this.stockStoreService.verifyExistingStock(stock);
               this.infoMsg = {
                 type: TypeInfoMessage.success,
                 text: `The stock market has been ${
@@ -72,6 +94,7 @@ export class SearchComponent implements OnInit {
             }
           })
         )
+        // Stop loader and add new stock
         .subscribe({
           next: (stock: StockMarket) => {
             if (stock.c) {

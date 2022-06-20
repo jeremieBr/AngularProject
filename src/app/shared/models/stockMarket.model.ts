@@ -8,4 +8,17 @@ export interface StockMarket {
   pc: number; // Previous close price
   t: number; // Date of updated informations
   symbol: string; // symbol of stock market
+  description: string; // symbol description
+}
+
+export interface searchDetailsStock {
+  count: number; // Number of results
+  result: searchResultDetailsStock[]; // Array of search results
+}
+
+export interface searchResultDetailsStock {
+  description: string; // Symbol description
+  displaySymbol: string; // Display symbol name
+  symbol: string; // Unique symbol
+  type: string; // Security type
 }
