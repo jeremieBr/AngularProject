@@ -4,6 +4,7 @@
       <h5 class="card-title">{{ stock?.description }} ({{ stock?.symbol }})</h5>
     </div>
     <div class="card-body">
+      <div [hidden]="!isLoading" class="spinner-border" role="status"></div>
       <div class="row" *ngIf="sentiments">
         <div
           *ngFor="let month of monthsToDisplay; let index = index"

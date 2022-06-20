@@ -21,6 +21,7 @@ export class SentimentComponent implements OnInit {
   // Utils
   monthsToDisplay!: number[];
   monthEnum = Month;
+  isLoading: boolean = false;
 
   // Private
   private notifier = new Subject();
@@ -37,11 +38,21 @@ export class SentimentComponent implements OnInit {
     // Get month to display it when no value return by api.
     this.getMonthsToDisplay(NB_MONTH_TO_DISPLAY);
     if (symbol) {
+      this.isLoading = true;
       // Get sentiment of stock market
       this.stockService
         .getDetailsByMonths(NB_MONTH_TO_DISPLAY, symbol)
         .pipe(takeUntil(this.notifier))
-        .subscribe((s: Sentiment[]) => (this.sentiments = s));
+        .subscribe({
+          next: (s: Sentiment[]) => {
+            this.sentiments = s;
+            this.isLoading = false;
+          },
+          error: () => {
+            this.isLoading = false;
+          },
+        });
+
       // Get informations (Name/desc) of symbol
       this.stock = this.stockService
         .getStocks()
