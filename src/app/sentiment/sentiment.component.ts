@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
-import { environment } from "src/environments/environment";
 import { Month } from "../shared/enums/month.enum";
-import { ResultSentiment, Sentiment } from "../shared/models/sentiment.model";
+import { Sentiment } from "../shared/models/sentiment.model";
 import { StockMarket } from "../shared/models/stockMarket.model";
 import { StockService } from "../shared/services/stock.service";
 
