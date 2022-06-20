@@ -49,9 +49,10 @@ export class SearchComponent implements OnInit {
    */
   public addStock(): void {
     if (this.stockForm.valid) {
+      const stockName = this.stockName?.value.toUpperCase();
       this.isloading = true;
       this.stockService
-        .getBySymbol(this.stockName?.value)
+        .getBySymbol(stockName)
         .pipe(
           tap((stock: StockMarket) => {
             if (!stock.c) {
@@ -60,17 +61,27 @@ export class SearchComponent implements OnInit {
                 text: "The stock market does not exist",
               };
             } else {
+              stock.symbol = stockName;
+              const indexStock = this.stockService.verifyExistingStock(stock);
               this.infoMsg = {
                 type: TypeInfoMessage.success,
-                text: "The stock market has been added",
+                text: `The stock market has been ${
+                  indexStock !== -1 ? "updated" : "added"
+                }`,
               };
             }
           })
         )
-        .subscribe((val) => {
-          // We need to add it to localStorage to display it on list
-          console.log(val);
-          this.isloading = false;
+        .subscribe({
+          next: (stock: StockMarket) => {
+            if (stock.c) {
+              this.stockService.addStockToLocalStorage(stock);
+            }
+            this.isloading = false;
+          },
+          error: () => {
+            this.isloading = false;
+          },
         });
     }
   }

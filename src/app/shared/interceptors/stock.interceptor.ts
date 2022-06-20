@@ -4,8 +4,9 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
+  HttpErrorResponse,
 } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import { environment } from "src/environments/environment";
 
 @Injectable()
@@ -13,21 +14,19 @@ export class StockInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(
-    request: HttpRequest<unknown>,
+    request: HttpRequest<any>,
     next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
+  ): Observable<HttpEvent<any>> {
     const httpRequest = new HttpRequest(
       <any>request.method,
       `${request.url}&token=${environment.finnhubApiKey}`
     );
     request = Object.assign(request, httpRequest);
-    // return next.handle(
-    //   request.clone({
-    //     setHeaders: {
-    //       "x-finnhub-token": api_key,
-    //     },
-    //   })
-    // );
-    return next.handle(request.clone(request));
+    return next.handle(request.clone(request)).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error("An error occurred:", error.message);
+        return throwError(() => error);
+      })
+    );
   }
 }

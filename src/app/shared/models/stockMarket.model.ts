@@ -7,4 +7,5 @@ export interface StockMarket {
   o: number; // Opend price of the day
   pc: number; // Previous close price
   t: number; // Date of updated informations
+  symbol: string; // symbol of stock market
 }
