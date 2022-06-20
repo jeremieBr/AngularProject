@@ -1,29 +1,38 @@
 <div class="card">
   <div class="card-header">
-    {{ stock.description }}
+    <h5 class="card-title">{{ stock.description }} ({{ stock.symbol }})</h5>
 
     <button type="button" class="btn close" (click)="removeStock(stock)">
       X
     </button>
   </div>
   <div class="card-body">
-    <h5 class="card-title">{{ stock.symbol }}</h5>
     <div class="row">
       <div class="col-6">
         <div class="row">
-          <div class="col-6">Change today :</div>
-          <div class="col-6">Opening prince :</div>
+          <div class="col-6">
+            Change today : {{ stock.dp | number: "1.1-1" }}%
+          </div>
+          <div class="col-6">
+            Opening prince : {{ stock.o | currency: "USD" }}
+          </div>
         </div>
         <div class="row">
-          <div class="col-6">Current price :</div>
-          <div class="col-6">High price :</div>
+          <div class="col-6">
+            Current price : {{ stock.c | currency: "USD" }}
+          </div>
+          <div class="col-6">High price : {{ stock.h | currency: "USD" }}</div>
         </div>
       </div>
-      <div class="col-6">SYMBOL FLECHE</div>
+      <div class="col-6 text-center">
+        <span
+          class="marker"
+          [ngClass]="{ negative: stock.dp < 0, positive: stock.dp >= 0 }"
+          >{{ stock.dp < 0 ? "🡻" : "🡹" }}</span
+        >
+      </div>
     </div>
-    <p class="card-text">
-      With supporting text below as a natural lead-in to additional content.
-    </p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <div class="bottom"></div>
+    <a href="#" class="btn btn-primary">Go to social sentiment details</a>
   </div>
 </div>
